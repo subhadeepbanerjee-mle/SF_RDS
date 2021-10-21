@@ -1,0 +1,12 @@
+--Задание 4.1
+select
+    an.city,
+    count(an.airport_code) as qnt
+from
+    dst_project.airports an
+group by
+      an.city
+
+order by
+   qnt desc
+

@@ -1,0 +1,74 @@
+ WITH ts WITH ts AS
+    ( SELECT
+             f.flight_id,
+             f.flight_no,
+             a1.city AS departure_city,
+             f.departure_airport,
+             a2.city AS arrival_city,
+             f.aircraft_code,
+             f.scheduled_departure,
+             f.scheduled_arrival,
+             f.scheduled_arrival - f.scheduled_departure AS scheduled_duration,
+
+             count( tf.ticket_no ) AS fact_passengers,
+             (
+                 SELECT
+                        count( s.seat_no )
+                 FROM dst_project.seats s
+                 WHERE s.aircraft_code = f.aircraft_code
+             ) AS total_seats
+    FROM dst_project.flights f
+        JOIN  dst_project.airports a1 ON f.departure_airport = a1.airport_code
+        JOIN  dst_project.airports a2 ON f.arrival_airport = a2.airport_code
+        FULL OUTER JOIN dst_project.ticket_flights tf ON f.flight_id = tf.flight_id
+
+    WHERE f.status not in ('Cancelled')
+    GROUP BY 1, 2, 3, 4, 5,6,7,8,9
+    ),
+bc AS
+    (SELECT
+        tf1.flight_id,
+        count(tf1.fare_conditions) AS BC_passengers,
+        sum(tf1.amount) AS BC_amount
+
+    FROM dst_project.ticket_flights tf1
+    WHERE tf1.fare_conditions in ('Business')
+    GROUP BY 1
+    ),
+
+ec AS
+    (SELECT
+        tf2.flight_id,
+        count(tf2.fare_conditions) AS EC_passengers,
+        sum(tf2.amount) AS EC_amount
+     FROM dst_project.ticket_flights tf2
+     WHERE tf2.fare_conditions in ('Economy')
+     GROUP BY 1
+    )
+
+SELECT
+       ts.flight_id,
+       ts.flight_no,
+       ts.scheduled_departure,
+       ts.scheduled_arrival,
+       EXTRACT(HOUR FROM ts.scheduled_duration) + EXTRACT(MINUTES FROM ts.scheduled_duration)/60 AS duration_hours,
+       ts.departure_city,
+       ts.arrival_city,
+       a.model,
+       bc.BC_passengers,
+       bc.BC_amount,
+       ec.EC_passengers,
+       ec.EC_amount,
+       ts.fact_passengers,
+       ts.total_seats,
+       round( ts.fact_passengers::numeric / ts.total_seats::numeric, 2 ) AS fraction
+FROM ts
+    FULL OUTER JOIN dst_project.aircrafts AS a ON ts.aircraft_code = a.aircraft_code
+    FULL OUTER JOIN bc on ts.flight_id = bc.flight_id
+    FULL OUTER JOIN ec on bc.flight_id = ec.flight_id
+
+
+/* Выборка Зима 2017 */
+WHERE ts.departure_airport = 'AAQ'
+    AND (date_trunc('month', ts.scheduled_departure) in ('2017-01-01', '2017-02-01', '2017-12-01'))
+ORDER BY ts.flight_no;

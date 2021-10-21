@@ -1,0 +1,30 @@
+--Задание 4.5.1
+/* Вопрос 1. Мест какого класса у SU9 больше всего?*/
+
+select
+    a.aircraft_code,
+    tf.fare_conditions,
+    count(tf.fare_conditions)
+from dst_project.flights f
+    join dst_project.ticket_flights tf
+    on f.flight_id = tf.flight_id
+    join dst_project.aircrafts a
+    on f.aircraft_code = a.aircraft_code
+
+where a.aircraft_code = 'SU9'
+group by tf.fare_conditions,a.aircraft_code
+
+--Задание 4.5.2
+/* Вопрос 2. Какую самую минимальную стоимость составило бронирование за всю историю?*/
+
+--Задание 4.5.3
+/* Вопрос 3. Какой номер места был у пассажира с id = 4313 788533?*/
+
+select
+    bp.seat_no
+from dst_project.boarding_passes bp
+    join dst_project.tickets t
+    on bp.ticket_no = t.ticket_no
+
+where t.passenger_id = '4313 788533'
+

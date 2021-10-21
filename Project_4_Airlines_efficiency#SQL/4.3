@@ -1,0 +1,62 @@
+-- Задание 4.3.1
+/*Вопрос 1. Сколько всего рейсов было отменено по данным базы?*/
+select
+    count(f.flight_id)
+from dst_project.flights f
+where  f.status = 'Cancelled'
+
+-- Задание 4.3.2
+/*Вопрос 2. Сколько самолетов моделей типа Boeing, Sukhoi Superjet, Airbus находится в базе авиаперевозок?*/
+select
+    ac.model,
+   count(ac.model)
+from dst_project.aircrafts ac
+where ac.model like 'Boeing%'
+group by
+    ac.model
+
+union all
+select
+    ac.model,
+   count(ac.model)
+from dst_project.aircrafts ac
+where ac.model like 'Sukhoi%'
+group by
+    ac.model
+
+union all
+select
+    ac.model,
+   count(ac.model)
+from dst_project.aircrafts ac
+where ac.model like 'Airbus%'
+group by
+    ac.model
+
+-- Задание 4.3.3
+/*Вопрос 3. В какой части (частях) света находится больше аэропортов?*/
+
+select
+         a.timezone,
+       count(a.timezone) as count
+from
+    dst_project.airports a
+group by
+    a.timezone
+order by
+count desc
+
+-- Задание 4.3.4
+/*Вопрос 4. У какого рейса была самая большая задержка прибытия за все время сбора данных? Введите id рейса (flight_id).*/
+
+select
+       f.flight_id,
+       f.actual_arrival-f.scheduled_arrival as flight_delay
+
+from dst_project.flights f
+where f.status ='Arrived'
+order by
+flight_delay desc
+limit 1
+
+

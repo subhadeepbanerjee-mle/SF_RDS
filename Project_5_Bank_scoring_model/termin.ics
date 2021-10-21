@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Michael Angstadt//biweekly 0.6.3//EN
+BEGIN:VEVENT
+UID:6517b765-af90-4266-a8af-549a570c84dc
+DTSTAMP:20210709T173355Z
+SUMMARY;LANGUAGE=de-DE:Termin bei Praxis: Corona-Impfzentrum Hamburg - 0
+DESCRIPTION;LANGUAGE=de-DE:Ihr Vermittlungscode: YRD8-F7HU-X55Z\nHINWEISE:\
+ n- Bitte den Eingang West\, Lagerstraße nutzen!\n- Weitere Informationen f
+ inden Sie auf der Webseite https://www.hamburg-impft.de\nBitte den Eingang 
+ West\, Lagerstraße nutzen!
+URL:
+DTSTART:20210718T073000Z
+DTEND:20210718T074500Z
+LOCATION:Lagerstraße\, Halle A 3\, Eingang West in 20357 Hamburg
+CLASS:PRIVATE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER;RELATED=START:-PT60M
+DESCRIPTION:Erinnerung an Ihren bevorstehenden Impf-Termin.
+END:VALARM
+END:VEVENT
+END:VCALENDAR

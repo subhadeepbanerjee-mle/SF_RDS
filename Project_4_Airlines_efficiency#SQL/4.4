@@ -1,0 +1,38 @@
+--Задание 4.4.1
+/* Вопрос 1. Когда был запланирован самый первый вылет, сохраненный в базе данных?*/
+
+select
+       min(f.scheduled_departure)
+from dst_project.flights f
+
+--Задание 4.4.2
+/* Вопрос 2. Сколько минут составляет запланированное время полета в самом длительном рейсе?*/
+
+select
+       date_part('hour',f.scheduled_arrival-f.scheduled_departure)*60+
+       date_part('minute',f.scheduled_arrival-f.scheduled_departure) as most_long_flight
+from dst_project.flights f
+order by
+most_long_flight desc
+
+--Задание 4.4.3
+/* Вопрос 3. Между какими аэропортами пролегает самый длительный по времени запланированный рейс?*/
+
+select
+    f.departure_airport,
+    f.arrival_airport,
+    f.scheduled_arrival-f.scheduled_departure as most_long_flight
+from dst_project.flights f
+
+order by
+most_long_flight desc
+limit 1
+
+--Задание 4.4.4
+/* Вопрос 4. Сколько составляет средняя дальность полета среди всех самолетов в минутах?
+   Секунды округляются в меньшую сторону (отбрасываются до минут).*/
+
+select
+       avg(date_part('hour',f.scheduled_arrival-f.scheduled_departure)*60+
+       date_part('minute',f.scheduled_arrival-f.scheduled_departure))
+from dst_project.flights f

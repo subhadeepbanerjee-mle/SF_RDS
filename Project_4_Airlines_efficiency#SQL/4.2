@@ -1,0 +1,29 @@
+-- Задание 4.2.1
+
+select
+       distinct(f.status)
+from dst_project.flights f
+
+-- Задание 4.2.2
+select
+      count(f.status)
+from dst_project.flights f
+where f.status = 'Departed'
+
+-- Задание 4.2.3
+select
+       a.model,
+      count(s.seat_no)
+from dst_project.seats s
+    join dst_project.aircrafts a
+        on s.aircraft_code = a.aircraft_code
+where a.model = 'Boeing 777-300'
+group by a.model
+
+-- Задание 4.2.4
+/*Сколько состоявшихся (фактических) рейсов было совершено между 1 апреля 2017 года и 1 сентября 2017 года?*/
+select
+    count(f.flight_id)
+from dst_project.flights f
+where  f.status = 'Arrived' and f.actual_departure between '2017-04-01' and '2017-09-01'
+

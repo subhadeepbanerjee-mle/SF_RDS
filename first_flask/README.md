@@ -7,7 +7,9 @@ You must have Scikit Learn, Pandas (for Machine Leraning Model) and Flask instal
 This project has two major parts :
 
 model.py - This contains code for downloading of diabetes dataset for Machine Learning model to predict one of the value 
+
 flask_server.py - This contains Flask server that receives the deseriesed model and computes the precited value.
+
 Models- This folder contains the seriesed ML model
 
 ## Running the model

@@ -4,7 +4,7 @@ This is a simple project to elaborate how to deploy a Machine Learning model usi
 You must have Scikit Learn, Pandas (for Machine Leraning Model) and Flask installed.
 
 ## Project Structure
-This project has four major parts :
+This project has two major parts :
 
 model.py - This contains code for downloading of diabetes dataset for Machine Learning model to predict one of the value 
 flask_server.py - This contains Flask server that receives the deseriesed model and computes the precited value.
